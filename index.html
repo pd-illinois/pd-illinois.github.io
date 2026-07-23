@@ -3,182 +3,2072 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>pd-illinois | AI Blog</title>
-  <meta name="description" content="Public-facing AI experiments, notes, and demos by pd-illinois." />
+  <title>prateekon.ai - Console Blog</title>
   <style>
     :root {
-      --bg-1: #f7f6f3;
-      --bg-2: #efe9dc;
-      --ink: #1f1f1f;
-      --muted: #5c564d;
-      --accent: #c74f2f;
-      --card: rgba(255, 255, 255, 0.75);
-      --border: rgba(31, 31, 31, 0.12);
+      --bg-980: #080b0f;
+      --bg-940: #0b1016;
+      --bg-900: #0e141b;
+      --panel-850: #111a22;
+      --panel-800: #14202a;
+      --line-700: #1d2b37;
+      --line-600: #26343f;
+      --line-500: #33454f;
+      --phos-500: #57e39a;
+      --phos-600: #33c47b;
+      --amber-500: #f4b13c;
+      --cyan-500: #4cc5f0;
+      --red-500: #ff6b6b;
+      --txt-100: #d7e2ea;
+      --txt-300: #9fb1bd;
+      --txt-500: #6b7f8d;
+
+      --surface-page: var(--bg-980);
+      --surface-panel: var(--panel-850);
+      --surface-raised: var(--panel-800);
+      --text-primary: var(--txt-100);
+      --text-secondary: var(--txt-300);
+      --text-muted: var(--txt-500);
+      --accent: var(--phos-500);
+      --accent-dim: var(--phos-600);
+      --signal-warn: var(--amber-500);
+      --signal-info: var(--cyan-500);
+      --signal-crit: var(--red-500);
+      --hairline: var(--line-700);
+      --hairline-2: var(--line-600);
+      --grid-minor: rgba(87, 227, 154, .028);
+      --grid-major: rgba(38, 52, 63, .35);
+      --canvas-grid-major: rgba(38, 52, 63, .28);
+      --accent-glow: rgba(87, 227, 154, .6);
+      --accent-soft-glow: rgba(87, 227, 154, .18);
+      --warn-glow: rgba(244, 177, 60, .6);
+      --canvas-link: #33c47b;
+      --canvas-node-dot: #57e39a;
+      --canvas-main-link: #33c47b;
+      --canvas-child-link: #4cc5f0;
+
+      --font-mono: ui-monospace, "SFMono-Regular", "Cascadia Mono", "Consolas", "Roboto Mono", "Liberation Mono", monospace;
+      --radius: 2px;
+      --tick: 10px;
+      --motion: 120ms;
     }
 
-    * {
-      box-sizing: border-box;
-    }
+    * { box-sizing: border-box; }
+    html, body { height: 100%; }
 
     body {
       margin: 0;
-      min-height: 100vh;
-      font-family: "Georgia", "Times New Roman", serif;
-      color: var(--ink);
-      background:
-        radial-gradient(circle at 15% 20%, rgba(199, 79, 47, 0.12), transparent 35%),
-        radial-gradient(circle at 85% 30%, rgba(31, 31, 31, 0.08), transparent 40%),
-        linear-gradient(145deg, var(--bg-1), var(--bg-2));
-      display: grid;
-      place-items: center;
-      padding: 1.5rem;
+      color: var(--text-primary);
+      font: 13px/1.5 var(--font-mono);
+      background: var(--surface-page);
+      background-image:
+        repeating-linear-gradient(0deg, var(--grid-minor) 0 1px, transparent 1px 3px),
+        linear-gradient(0deg, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-major) 1px, transparent 1px);
+      background-size: 100% 3px, 40px 40px, 40px 40px;
+      overflow: hidden;
     }
 
-    .shell {
-      width: min(900px, 100%);
-      border: 1px solid var(--border);
-      background: var(--card);
-      backdrop-filter: blur(6px);
-      border-radius: 20px;
-      box-shadow: 0 24px 60px rgba(0, 0, 0, 0.08);
+    body.light-theme {
+      --bg-980: #f5f7fb;
+      --bg-940: #ebf0f7;
+      --bg-900: #e3eaf3;
+      --panel-850: #ffffff;
+      --panel-800: #f7f9fc;
+      --line-700: #aebdd0;
+      --line-600: #97a9bf;
+      --line-500: #7f95ad;
+      --phos-500: #0f7e54;
+      --phos-600: #0c6543;
+      --amber-500: #9a6200;
+      --cyan-500: #006e95;
+      --red-500: #b54747;
+      --txt-100: #111923;
+      --txt-300: #243140;
+      --txt-500: #4b5d70;
+      --surface-page: var(--bg-980);
+      --surface-panel: var(--panel-850);
+      --surface-raised: var(--panel-800);
+      --text-primary: var(--txt-100);
+      --text-secondary: var(--txt-300);
+      --text-muted: var(--txt-500);
+      --accent: var(--phos-500);
+      --accent-dim: var(--phos-600);
+      --signal-warn: var(--amber-500);
+      --signal-info: var(--cyan-500);
+      --signal-crit: var(--red-500);
+      --hairline: var(--line-700);
+      --hairline-2: var(--line-600);
+      --grid-minor: rgba(17, 25, 35, .03);
+      --grid-major: rgba(94, 109, 126, .16);
+      --canvas-grid-major: rgba(94, 109, 126, .24);
+      --accent-glow: rgba(15, 126, 84, .34);
+      --accent-soft-glow: rgba(15, 126, 84, .14);
+      --warn-glow: rgba(154, 98, 0, .26);
+      --canvas-link: #0f7e54;
+      --canvas-node-dot: #0f7e54;
+      --canvas-main-link: #0f7e54;
+      --canvas-child-link: #006e95;
+      background-image:
+        repeating-linear-gradient(0deg, var(--grid-minor) 0 1px, transparent 1px 3px),
+        linear-gradient(0deg, var(--grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-major) 1px, transparent 1px);
+    }
+
+    .wrap { display: grid; grid-template-columns: 288px minmax(0, 1fr); height: 100%; }
+
+    .sidebar {
+      border-right: 1px solid var(--hairline-2);
+      background: var(--bg-940);
+      padding: 16px 14px;
+      display: flex;
+      flex-direction: column;
+      gap: 18px;
+      overflow: auto;
+      font-size: 13px;
+    }
+
+    body.sidebar-collapsed .wrap { grid-template-columns: minmax(0, 1fr); }
+    body.sidebar-collapsed .sidebar { display: none; }
+
+    .brand {
+      border: 1px solid var(--hairline-2);
+      border-radius: var(--radius);
+      padding: 12px;
+      position: relative;
+      background: var(--surface-panel);
+    }
+
+    .brand::before {
+      content: "";
+      position: absolute;
+      top: -1px;
+      left: -1px;
+      width: var(--tick);
+      height: var(--tick);
+      border-top: 2px solid var(--accent);
+      border-left: 2px solid var(--accent);
+    }
+
+    .brand::after {
+      content: "";
+      position: absolute;
+      bottom: -1px;
+      right: -1px;
+      width: var(--tick);
+      height: var(--tick);
+      border-bottom: 2px solid var(--accent);
+      border-right: 2px solid var(--accent);
+    }
+
+    .brand h1 { margin: 0; font-size: 1.15rem; color: var(--accent); }
+    .brand p { margin: 8px 0 0; font-size: .72rem; color: var(--text-muted); display: flex; align-items: center; gap: 8px; }
+    .live-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      background: var(--signal-crit);
+      box-shadow: 0 0 0 1px color-mix(in srgb, var(--signal-crit) 55%, transparent), 0 0 7px color-mix(in srgb, var(--signal-crit) 65%, transparent);
+      animation: liveBlink 1.1s steps(1) infinite;
+      flex: none;
+    }
+
+    .section-title {
+      margin: 0 0 8px;
+      font-size: .68rem;
+      letter-spacing: .18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+
+    .section-title::before { content: "//"; color: var(--accent-dim); }
+    .section-title::after { content: ""; flex: 1; height: 1px; background: var(--hairline); }
+
+    .toc { display: flex; flex-direction: column; gap: 2px; }
+
+    .toc button {
+      border: 1px solid transparent;
+      border-left: 2px solid var(--hairline-2);
+      background: transparent;
+      color: var(--text-secondary);
+      font: inherit;
+      font-size: .82rem;
+      cursor: pointer;
+      text-align: left;
+      padding: 9px 10px;
+      transition: background var(--motion), border-color var(--motion), color var(--motion);
+    }
+
+    .toc button:hover { background: var(--surface-panel); color: var(--text-primary); }
+    .toc button .idx { color: var(--accent); }
+    .toc button .meta { display: block; font-size: .68rem; color: var(--text-muted); margin-top: 3px; }
+    .toc button.active { border-left-color: var(--accent); background: var(--surface-raised); color: var(--text-primary); }
+    .toc button.active .idx { color: var(--signal-warn); }
+
+    .legend { border: 1px dashed var(--hairline-2); border-radius: var(--radius); padding: 11px; }
+    .legend p { margin: 0; font-size: .72rem; color: var(--text-secondary); }
+    .legend .kbd { color: var(--accent); }
+
+    .stage {
+      position: relative;
       overflow: hidden;
-      animation: rise 700ms ease-out;
+      display: flex;
+      flex-direction: column;
     }
 
     .topbar {
       display: flex;
-      justify-content: space-between;
-      gap: 1rem;
+      gap: 14px;
       align-items: center;
-      padding: 1rem 1.25rem;
-      border-bottom: 1px solid var(--border);
-      font-size: 0.95rem;
-      color: var(--muted);
+      padding: 10px 16px;
+      border-bottom: 1px solid var(--hairline-2);
+      background: var(--bg-940);
     }
 
-    .status-dot {
-      width: 10px;
-      height: 10px;
-      display: inline-block;
-      border-radius: 50%;
-      background: var(--accent);
-      margin-right: 0.5rem;
-      animation: pulse 1.8s infinite;
+    .topbar-left { display: flex; align-items: center; gap: 8px; }
+
+    .btn {
+      border: 1px solid var(--hairline-2);
+      background: var(--surface-panel);
+      color: var(--text-secondary);
+      font: inherit;
+      cursor: pointer;
+      border-radius: var(--radius);
+      padding: 7px 11px;
+      transition: background var(--motion), color var(--motion), border-color var(--motion);
     }
 
-    .content {
-      padding: clamp(1.5rem, 3vw, 3rem);
+    .btn:hover { border-color: var(--accent); color: var(--accent); }
+    .stage-menu-toggle { width: 38px; height: 38px; padding: 0; display: grid; place-items: center; }
+    .hamburger { width: 15px; display: grid; gap: 3px; }
+    .hamburger span { display: block; height: 2px; background: currentColor; }
+    .btn.primary { width: 38px; height: 38px; padding: 0; color: var(--accent); border-color: var(--accent-dim); }
+    .btn.primary:hover { background: var(--accent); color: var(--bg-980); }
+
+    .status { display: flex; align-items: center; gap: 14px; flex: 1 1 auto; min-width: 0; }
+
+    .folio-label {
+      font-size: .72rem;
+      letter-spacing: .1em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      border: 1px solid var(--hairline-2);
+      border-radius: var(--radius);
+      padding: 5px 9px;
+    }
+
+    .folio-label b { color: var(--accent); }
+
+    .journey {
+      position: relative;
+      flex: 1 1 auto;
+      min-width: 0;
+      height: 38px;
+      overflow: hidden;
+      border: 1px solid var(--hairline-2);
+      border-radius: var(--radius);
+      background: var(--bg-900);
+    }
+
+    .journey svg { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; }
+    .journey-base { fill: none; stroke: var(--hairline-2); stroke-width: 2; }
+    .journey-progress { fill: none; stroke: var(--accent); stroke-width: 2; filter: drop-shadow(0 0 3px var(--accent-glow)); transition: stroke-dashoffset .4s ease; }
+    .journey-traveler { fill: var(--accent); stroke: var(--bg-980); stroke-width: 2; }
+    .journey-points { position: absolute; inset: 0; z-index: 2; }
+
+    .journey-dot {
+      position: absolute;
+      width: 14px;
+      height: 14px;
+      margin-left: -7px;
+      margin-top: -7px;
+      border: 1.5px solid var(--line-500);
+      background: var(--bg-900);
+      color: var(--text-muted);
       display: grid;
-      gap: 1.25rem;
+      place-items: center;
+      font-size: .54rem;
+      font-weight: 700;
+      cursor: pointer;
+      border-radius: 1px;
+      transition: transform var(--motion), background var(--motion), border-color var(--motion), color var(--motion);
     }
 
-    h1 {
-      font-size: clamp(2rem, 4.5vw, 3.4rem);
-      line-height: 1.05;
-      margin: 0;
-      letter-spacing: -0.02em;
+    .journey-dot.done { background: var(--accent-dim); border-color: var(--accent); color: var(--bg-980); }
+    .journey-dot.active { background: var(--signal-warn); border-color: var(--signal-warn); color: var(--bg-980); box-shadow: 0 0 8px var(--warn-glow); }
+
+    .book-shell { display: none; }
+
+    .canvas-shell { flex: 1; min-height: 0; position: relative; }
+
+    .canvas-viewport {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      overflow: hidden;
+      background: var(--bg-980);
+      background-image:
+        linear-gradient(0deg, var(--canvas-grid-major) 1px, transparent 1px),
+        linear-gradient(90deg, var(--canvas-grid-major) 1px, transparent 1px);
+      background-size: 44px 44px, 44px 44px;
     }
 
-    p {
-      margin: 0;
-      max-width: 65ch;
-      color: var(--muted);
-      font-size: 1.05rem;
-      line-height: 1.6;
+    .canvas-stage {
+      position: absolute;
+      inset: 0;
+      width: 3200px;
+      height: 2200px;
+      z-index: 5;
+      transform-origin: 0 0;
+      transition: transform .55s ease;
     }
 
-    .cta {
-      display: inline-flex;
+    .canvas-links {
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 3200px;
+      height: 2200px;
+      z-index: 4;
+      transform-origin: 0 0;
+      pointer-events: none;
+    }
+
+    .canvas-node {
+      position: absolute;
+      display: flex;
+      flex-direction: column;
+      background: var(--surface-panel);
+      border: 1px solid var(--line-600);
+      border-radius: var(--radius);
+      overflow: hidden;
+      cursor: pointer;
+      transition: transform .38s ease, opacity .38s ease, border-color .38s ease;
+    }
+
+    .canvas-node.active { border-color: var(--accent); }
+    .canvas-node.dim { opacity: .55; }
+    body.canvas .canvas-stage.focused .canvas-node { opacity: .1; pointer-events: none; }
+    body.canvas .canvas-stage.focused .canvas-node.active { opacity: 1; border-color: var(--accent); box-shadow: 0 0 0 1px var(--accent), 0 0 24px var(--accent-soft-glow); z-index: 60 !important; pointer-events: auto; }
+    body.canvas .canvas-stage.focused .canvas-node.adjacent { opacity: .2; z-index: 40 !important; }
+    body.canvas .canvas-stage.focused .canvas-node.adjacent-prev { transform: translate(16%, 2%) scale(.96); }
+    body.canvas .canvas-stage.focused .canvas-node.adjacent-next { transform: translate(-16%, 2%) scale(.96); }
+    body.canvas .canvas-stage.focused .canvas-node.dim { opacity: .05; transform: scale(.96); }
+
+    .canvas-node-head {
+      display: flex;
       align-items: center;
-      width: fit-content;
-      border: 1px solid var(--ink);
-      color: var(--ink);
+      gap: 10px;
+      padding: 9px 14px;
+      background: var(--bg-940);
+      border-bottom: 1px solid var(--line-600);
+    }
+
+    .canvas-node-no {
+      font-size: .72rem;
+      color: var(--bg-980);
+      background: var(--accent);
+      font-weight: 700;
+      padding: 2px 7px;
+      border-radius: 1px;
+      flex: none;
+    }
+
+    .canvas-node h2 { margin: 0; font-size: .98rem; font-weight: 700; color: var(--text-primary); letter-spacing: .01em; }
+    .canvas-node h2::before { content: "> "; color: var(--accent); }
+    .canvas-node p { margin: 2px 0 0; font-size: .66rem; letter-spacing: .14em; text-transform: uppercase; color: var(--text-muted); }
+    .canvas-node .dots { margin-left: auto; display: flex; gap: 6px; }
+    .canvas-node .dots i { width: 9px; height: 9px; border-radius: 50%; display: block; }
+    .canvas-node .dots i:nth-child(1) { background: var(--signal-crit); }
+    .canvas-node .dots i:nth-child(2) { background: var(--signal-warn); }
+    .canvas-node .dots i:nth-child(3) { background: var(--accent); }
+    .canvas-node-body { padding: 14px 16px 16px; flex: 1 1 auto; min-height: 0; overflow: auto; }
+    .canvas-node-thumb .canvas-node-body { padding: 10px 12px 12px; }
+    .canvas-node-thumb .canvas-node-head { padding: 7px 10px; }
+    .canvas-node-thumb .canvas-node-no { font-size: .65rem; }
+    .canvas-node-thumb h2 { font-size: .82rem; }
+    .canvas-node-thumb p { font-size: .58rem; }
+    body.canvas .canvas-stage.focused .canvas-node-thumb.active { transform: scale(1.04); }
+
+    .stage-overlay { position: absolute; inset: 0; pointer-events: none; z-index: 35; }
+
+    .stage-overlay > button {
+      position: absolute;
+      pointer-events: auto;
+      cursor: pointer;
+      font: inherit;
+      border: 1px solid var(--hairline-2);
+      background: var(--surface-panel);
+      color: var(--text-secondary);
+      border-radius: var(--radius);
+      display: grid;
+      place-items: center;
+      transition: border-color var(--motion), color var(--motion), background var(--motion);
+    }
+
+    .stage-overlay > button:hover { border-color: var(--accent); color: var(--accent); }
+    .stage-overlay .nav-btn { top: 50%; width: 42px; height: 42px; transform: translateY(-50%); font-size: 1rem; }
+    .stage-overlay .nav-prev { left: 16px; }
+    .stage-overlay .nav-next { right: 16px; }
+
+    .stage-overlay .nav-overview,
+    .stage-overlay .nav-home {
+      top: auto;
+      bottom: 16px;
+      height: 32px;
+      width: auto;
+      padding: 0 12px;
+      font-size: .68rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .stage-overlay .nav-overview { left: 50%; transform: translateX(-50%); }
+    .stage-overlay .nav-home { left: calc(50% - 130px); transform: translateX(-50%); }
+    .stage-overlay .tool-btn { width: 36px; height: 36px; bottom: 16px; font-size: 1rem; }
+    .stage-overlay .tool-zoom-out { right: 60px; }
+    .stage-overlay .tool-zoom-in { right: 16px; }
+
+    .map-legend-panel {
+      width: 100%;
+      max-height: 44vh;
+      overflow: auto;
+      border: 1px solid var(--line-600);
+      background: var(--surface-panel);
+      padding: 10px;
+      margin-top: 2px;
+      display: none;
+      margin-top: auto;
+    }
+
+    body.map-overview .map-legend-panel { display: block; }
+
+    .map-legend-head {
+      margin: 0 0 8px;
+      font-size: .72rem;
+      letter-spacing: .12em;
+      text-transform: uppercase;
+      color: var(--signal-warn);
+    }
+
+    .map-legend-section {
+      border: 1px solid var(--line-700);
+      margin-bottom: 8px;
+      padding: 8px;
+      background: var(--surface-raised);
+    }
+
+    .map-legend-section h4 {
+      margin: 0 0 8px;
+      font-size: .72rem;
+      letter-spacing: .08em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .map-blog-list,
+    .map-repo-list {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+      font-size: .72rem;
+    }
+
+    .map-blog-item,
+    .map-repo-item {
+      display: flex;
+      justify-content: space-between;
+      gap: 8px;
+      padding: 4px 6px;
+      border: 1px solid var(--line-700);
+      background: var(--surface-panel);
+      color: var(--text-secondary);
+    }
+
+    .map-blog-item a,
+    .map-repo-item a {
+      color: var(--signal-info);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+    }
+
+    .tm { display: flex; flex-direction: column; gap: 12px; }
+    .tm-comment { color: var(--text-muted); font-size: .78rem; }
+    .tm-comment::before { content: "// "; color: var(--accent-dim); }
+    .tm-lead { border-left: 2px solid var(--accent); padding: 6px 0 6px 12px; color: var(--text-secondary); font-size: .86rem; }
+    .tm-mods { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; }
+
+    .tm-mod {
+      border: 1px solid var(--line-600);
+      border-radius: var(--radius);
+      background: var(--surface-panel);
+      padding: 0;
+    }
+
+    .tm-mod .h {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 7px 11px;
+      border-bottom: 1px solid var(--line-700);
+      color: var(--accent);
+      font-size: .74rem;
+    }
+
+    .tm-mod .h .val { color: var(--signal-warn); }
+    .tm-mod .kv { padding: 9px 11px; display: grid; gap: 4px; }
+    .tm-mod .kv div { display: flex; justify-content: space-between; gap: 10px; font-size: .78rem; }
+    .tm-mod .kv .k { color: var(--text-muted); }
+    .tm-mod .kv .v { color: var(--text-primary); }
+
+    .tm-boot { border: 1px solid var(--line-600); border-radius: var(--radius); background: var(--bg-940); }
+    .tm-boot .bar { display: flex; align-items: center; gap: 8px; padding: 8px 12px; border-bottom: 1px solid var(--line-600); color: var(--text-muted); font-size: .72rem; }
+    .tm-boot .bar .dots { display: flex; gap: 6px; }
+    .tm-boot .bar .dots i { width: 9px; height: 9px; border-radius: 50%; }
+    .tm-boot .bar .dots i:nth-child(1) { background: var(--signal-crit); }
+    .tm-boot .bar .dots i:nth-child(2) { background: var(--signal-warn); }
+    .tm-boot .bar .dots i:nth-child(3) { background: var(--accent); }
+    .tm-boot .body { padding: 20px 22px 22px; }
+    .tm-boot .prompt { color: var(--text-muted); font-size: .8rem; }
+    .tm-boot .prompt b { color: var(--accent); }
+    .tm-boot h3 { margin: 10px 0 0; font-size: 1.8rem; line-height: 1.05; font-weight: 700; color: var(--text-primary); }
+    .tm-boot h3 .cur { display: inline-block; width: .55ch; height: 1.05em; background: var(--accent); transform: translateY(.14em); animation: blink 1.05s steps(1) infinite; }
+    .tm-boot .role { margin: 10px 0 0; color: var(--signal-info); font-size: .86rem; }
+    .tm-boot .desc { margin: 12px 0 0; color: var(--text-secondary); font-size: .86rem; max-width: 64ch; }
+    .tm-tags { margin-top: 16px; display: flex; flex-wrap: wrap; gap: 8px; }
+    .tm-tag { font-size: .68rem; color: var(--accent); border: 1px solid var(--accent-dim); border-radius: 1px; padding: 3px 9px; }
+    .tm-tag::before { content: "["; color: var(--text-muted); margin-right: 2px; }
+    .tm-tag::after { content: "]"; color: var(--text-muted); margin-left: 2px; }
+    .repo-code-card .body { padding-top: 18px; }
+    .repo-code-card .repo-meta { margin-top: 14px; display: grid; gap: 8px; }
+    .repo-code-card .repo-meta .row { display: flex; justify-content: space-between; gap: 12px; align-items: baseline; padding: 7px 10px; border: 1px solid var(--line-700); background: var(--surface-panel); font-size: .82rem; }
+    .repo-code-card .repo-meta .k { color: var(--text-muted); text-transform: uppercase; letter-spacing: .08em; font-size: .68rem; }
+    .repo-code-card .repo-meta .v { color: var(--text-primary); text-align: right; overflow-wrap: anywhere; }
+    .tm-link {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--accent);
+      border: 1px solid var(--accent-dim);
+      padding: 4px 8px;
       text-decoration: none;
-      border-radius: 999px;
-      padding: 0.7rem 1rem;
-      font-size: 0.95rem;
-      transition: 180ms ease;
+      font-size: .72rem;
+    }
+    .tm-link:hover { color: var(--bg-980); background: var(--accent); }
+
+    .tm-btn {
+      display: inline-block;
+      margin-top: 8px;
+      color: var(--text-primary);
+      border: 1px solid var(--hairline-2);
+      background: var(--surface-panel);
+      padding: 4px 8px;
+      text-decoration: none;
+      font-size: .72rem;
+      cursor: pointer;
     }
 
-    .cta:hover {
-      background: var(--ink);
-      color: #fff;
-      transform: translateY(-1px);
+    .tm-btn:hover {
+      border-color: var(--accent);
+      color: var(--accent);
     }
 
-    .chips {
+    .blog-filters {
       display: flex;
       flex-wrap: wrap;
-      gap: 0.5rem;
-      margin-top: 0.25rem;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    .chip {
-      border: 1px solid var(--border);
-      border-radius: 999px;
-      padding: 0.35rem 0.65rem;
-      font-size: 0.82rem;
-      color: var(--muted);
-      background: rgba(255, 255, 255, 0.7);
+    .blog-controls {
+      display: grid;
+      gap: 8px;
+      margin-bottom: 12px;
     }
 
-    @keyframes rise {
-      from {
-        opacity: 0;
-        transform: translateY(16px);
-      }
-      to {
-        opacity: 1;
-        transform: translateY(0);
-      }
+    .blog-sorts {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
     }
 
-    @keyframes pulse {
-      0% { opacity: 1; }
-      50% { opacity: 0.35; }
-      100% { opacity: 1; }
+    .blog-filter {
+      border: 1px solid var(--hairline-2);
+      background: var(--surface-panel);
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      font: inherit;
+      font-size: .72rem;
+      cursor: pointer;
     }
 
-    @media (max-width: 640px) {
-      .topbar {
-        flex-direction: column;
-        align-items: flex-start;
-      }
+    .blog-filter.active,
+    .blog-filter:hover {
+      border-color: var(--accent);
+      color: var(--accent);
+    }
+
+    .blog-sort {
+      border: 1px solid var(--hairline-2);
+      background: var(--surface-panel);
+      color: var(--text-secondary);
+      padding: 4px 8px;
+      font: inherit;
+      font-size: .72rem;
+      cursor: pointer;
+    }
+
+    .blog-sort.active,
+    .blog-sort:hover {
+      border-color: var(--signal-info);
+      color: var(--signal-info);
+    }
+
+    .blog-grid {
+      display: grid;
+      gap: 10px;
+      grid-template-columns: 1fr 1fr;
+    }
+
+    .blog-card {
+      border: 1px solid var(--line-600);
+      background: var(--surface-panel);
+      padding: 10px;
+    }
+
+    .blog-card h4 {
+      margin: 0 0 8px;
+      font-size: .86rem;
+      color: var(--text-primary);
+      line-height: 1.35;
+    }
+
+    .blog-card p {
+      margin: 0;
+      color: var(--text-secondary);
+      font-size: .76rem;
+    }
+
+    .blog-meta {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .blog-pill {
+      border: 1px solid var(--line-500);
+      color: var(--signal-info);
+      padding: 2px 6px;
+      font-size: .64rem;
+      letter-spacing: .04em;
+      text-transform: uppercase;
+      cursor: pointer;
+    }
+
+    .blog-open-row {
+      margin-top: 8px;
+      display: flex;
+      gap: 8px;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .blog-open-link {
+      color: var(--accent);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-size: .74rem;
+      cursor: pointer;
+    }
+
+    .blog-empty {
+      border: 1px dashed var(--hairline-2);
+      padding: 10px;
+      font-size: .74rem;
+      color: var(--text-muted);
+    }
+
+    .tm-markdown {
+      margin-top: 8px;
+      border: 1px solid var(--line-600);
+      background: var(--bg-900);
+      padding: 10px 12px;
+      color: var(--text-secondary);
+      font-size: .8rem;
+      line-height: 1.55;
+      max-height: 42vh;
+      overflow: auto;
+    }
+
+    .tm-markdown h1,
+    .tm-markdown h2,
+    .tm-markdown h3 {
+      margin: 12px 0 6px;
+      color: var(--text-primary);
+      font-size: 1rem;
+    }
+
+    .tm-markdown p { margin: 6px 0; }
+    .tm-markdown ul,
+    .tm-markdown ol { margin: 6px 0 8px 18px; }
+    .tm-markdown code {
+      background: var(--surface-panel);
+      border: 1px solid var(--line-600);
+      padding: 1px 5px;
+      color: var(--accent);
+    }
+
+    .tm-markdown pre {
+      background: var(--surface-panel);
+      border: 1px solid var(--line-600);
+      padding: 8px;
+      overflow: auto;
+    }
+
+    .tm-markdown a { color: var(--signal-info); }
+
+    .related-list {
+      display: grid;
+      gap: 6px;
+      margin-top: 8px;
+    }
+
+    .related-item {
+      color: var(--signal-info);
+      text-decoration: underline;
+      text-underline-offset: 2px;
+      font-size: .74rem;
+      cursor: pointer;
+      width: fit-content;
+    }
+
+    @keyframes blink { 50% { opacity: 0; } }
+    @keyframes liveBlink {
+      0%, 45% { opacity: 1; transform: scale(1); }
+      50%, 100% { opacity: .2; transform: scale(.9); }
+    }
+
+    @media (max-width: 1100px) {
+      body { overflow: hidden; }
+      .wrap { grid-template-columns: 1fr; height: 100vh; }
+      .stage { min-height: 100vh; }
+      .sidebar { order: 2; border-right: 0; border-top: 1px solid var(--hairline-2); }
+      .tm-mods { grid-template-columns: 1fr; }
     }
   </style>
 </head>
 <body>
-  <main class="shell">
-    <div class="topbar">
-      <div><span class="status-dot" aria-hidden="true"></span>GitHub Pages test build</div>
-      <div id="today"></div>
-    </div>
-
-    <section class="content">
-      <h1>Hello from pd-illinois.github.io</h1>
-      <p>
-        This is the first public test page for my AI blog and website.
-        Next I will add posts, project demos, and practical notes about what I build.
-      </p>
-      <a class="cta" href="https://github.com/pd-illinois" target="_blank" rel="noreferrer">Visit my GitHub profile</a>
-
-      <div class="chips" aria-label="content themes">
-        <span class="chip">AI demos</span>
-        <span class="chip">Prompt experiments</span>
-        <span class="chip">Dev notes</span>
-        <span class="chip">Public projects</span>
+  <div class="wrap">
+    <aside class="sidebar">
+      <div class="brand">
+        <h1>//prateekwrites.ai</h1>
+        <p><span class="live-dot" aria-hidden="true"></span>session live - notes on enterprise AI architecture, customer lessons, patterns, and things learned in the field</p>
       </div>
-    </section>
-  </main>
+
+      <div>
+        <div class="section-title">route_map</div>
+        <div class="toc" id="toc"></div>
+      </div>
+
+      <div class="legend">
+        <p><span class="kbd">left/right</span> step - <span class="kbd">+/-</span> zoom - <span class="kbd">space</span> run/pause - wheel to zoom.</p>
+      </div>
+
+      <aside class="map-legend-panel" id="mapLegendPanel" aria-label="Map legend">
+        <p class="map-legend-head">map legend</p>
+        <section class="map-legend-section">
+          <h4>blogs</h4>
+          <div class="blog-filters" data-role="map-blog-filters"></div>
+          <div class="blog-sorts" data-role="map-blog-sorts"></div>
+          <div class="map-blog-list" data-role="map-blog-list"></div>
+        </section>
+        <section class="map-legend-section">
+          <h4>repos</h4>
+          <div class="map-repo-list" data-role="map-repo-list"></div>
+        </section>
+      </aside>
+    </aside>
+
+    <main class="stage">
+      <div class="topbar">
+        <div class="topbar-left">
+          <button class="btn stage-menu-toggle" id="sidebarToggleBtn" type="button" aria-label="Hide menu" title="Hide menu">
+            <span class="hamburger" aria-hidden="true"><span></span><span></span><span></span></span>
+          </button>
+          <button class="btn primary" id="playBtn" aria-label="Pause autoplay" title="Pause autoplay">II</button>
+        </div>
+        <div class="status">
+          <span class="folio-label">node <b id="pageLabel">1/3</b></span>
+          <div class="journey" id="journeyMap" aria-hidden="true">
+            <svg viewBox="0 0 1000 120" preserveAspectRatio="none">
+              <path class="journey-base" id="journeyBasePath" d=""></path>
+              <path class="journey-progress" id="journeyProgressPath" d=""></path>
+              <circle class="journey-traveler" id="journeyTraveler" cx="0" cy="0" r="6"></circle>
+            </svg>
+            <div class="journey-points" id="journeyPoints"></div>
+          </div>
+        </div>
+        <button class="btn" id="themeToggleBtn" type="button" aria-label="Switch to light mode" title="Switch to light mode">light</button>
+      </div>
+
+      <section class="book-shell"><div class="book" id="book"></div></section>
+      <section class="canvas-shell" id="canvasShell" aria-hidden="true">
+        <div class="canvas-viewport" id="canvasViewport">
+          <svg class="canvas-links" id="canvasLinks" viewBox="0 0 3200 2200" preserveAspectRatio="none"></svg>
+          <div class="canvas-stage" id="canvasStage"></div>
+        </div>
+      </section>
+
+      <div class="stage-overlay" aria-hidden="false">
+        <button class="nav-btn nav-prev" id="canvasPrevBtn" type="button" aria-label="Previous node" title="Previous node">&lt;</button>
+        <button class="nav-btn nav-home" id="canvasHomeBtn" type="button" aria-label="Root node" title="Root node">cd /root</button>
+        <button class="nav-btn nav-overview" id="canvasOverviewBtn" type="button" aria-label="Topology map" title="Topology map">map --all</button>
+        <button class="nav-btn nav-next" id="canvasNextBtn" type="button" aria-label="Next node" title="Next node">&gt;</button>
+        <button class="tool-btn tool-zoom-out" id="zoomOutBtn" type="button" aria-label="Zoom out" title="Zoom out">-</button>
+        <button class="tool-btn tool-zoom-in" id="zoomInBtn" type="button" aria-label="Zoom in" title="Zoom in">+</button>
+      </div>
+    </main>
+  </div>
 
   <script>
-    const now = new Date();
-    document.getElementById("today").textContent = now.toLocaleDateString(undefined, {
-      weekday: "short",
-      year: "numeric",
-      month: "short",
-      day: "numeric"
+    const BLOG_ROOT_INDEX = 0;
+    const SORT_OPTIONS = ["Newest", "Category", "Source"];
+
+    const fallbackBlogCatalog = [
+      {
+        id: "ai-generated-ui-linkedin",
+        name: "Does your AI Generated UI all looks the same?",
+        topic: "Design",
+        category: "Design",
+        summary: "A practical view on why many AI-generated interfaces look similar and how to avoid generic outcomes.",
+        kind: "external",
+        source: "LinkedIn",
+        url: "https://www.linkedin.com/pulse/does-your-ai-generated-ui-all-looks-same-prateek-dhiman-8pdge/",
+        date: "2026-07-01",
+        createdDate: "2026-07-01"
+      },
+      {
+        id: "agentic-dev-local",
+        name: "Getting Started with Agentic Development",
+        topic: "Agents",
+        category: "Agentic Development",
+        summary: "Local markdown sample loaded from the blogs folder and rendered in a child page.",
+        kind: "local",
+        source: "Local",
+        path: "blogs/getting-started-agentic-development.md",
+        contentMarkdown: "# Getting Started with Agentic Development\n\nAgentic development is a practical way to design systems that can plan, use tools, and recover from failures with minimal manual orchestration.\n\n## Why It Matters\n\n- You can break complex workflows into reusable tool calls.\n- You can keep business logic explicit while still using model reasoning.\n- You can inspect failures at step boundaries and improve quickly.\n\n## Basic Flow\n\n1. Define the user goal and completion criteria.\n2. Model proposes an execution plan.\n3. Runtime resolves each step using tools or APIs.\n4. Guardrails validate outputs.\n5. System returns final response with trace metadata.\n\n## Design Notes\n\nUse a small command surface first. Add tools only when there is a repeated need.\n\n```text\nuser -> planner -> tool router -> tool execution -> validator -> response\n```\n\n## Next Steps\n\n- Add category-specific tools for Azure Architecture and Agents.\n- Track retries and failure reasons for every tool call.\n- Add evaluation prompts for regression checks.",
+        date: "2026-07-20",
+        createdDate: "2026-07-20"
+      },
+      {
+        id: "agentic-development-playbook",
+        name: "From a Month to a Few Days: How Agentic Development Rewrote My Build Playbook",
+        topic: "Agentic AI",
+        category: "Agentic Development",
+        summary: "How direct agent workflows compressed a build cycle from weeks to days.",
+        kind: "external",
+        source: "LinkedIn",
+        url: "https://www.linkedin.com/pulse/from-month-few-days-how-agentic-development-rewrote-my-prateek-dhiman-1vd1e/",
+        date: "2026-04-22",
+        createdDate: "2026-04-22"
+      }
+    ];
+
+    const repoCatalog = [
+      {
+        id: "mvpweaver",
+        name: "MVPWeaver",
+        topic: "MVP builder",
+        category: "AI App Prototypes",
+        summary: "A product-focused prototype for turning early ideas into something demonstrable quickly.",
+        createdDate: "2026-07-23",
+        status: "coming soon",
+        tags: ["Product", "Prototype", "AI"]
+      },
+      {
+        id: "contoso-summarization-app",
+        name: "ContosoSummarizationApp",
+        topic: "Summarization app",
+        category: "AI App Prototypes",
+        summary: "An enterprise-style summarization application that fits a customer-facing workflow.",
+        createdDate: "2024-10-09",
+        url: "https://github.com/pd-illinois/ContosoSummarizationApp",
+        tags: ["Summarization", "Enterprise", "Copilot"]
+      },
+      {
+        id: "autogen-experiments",
+        name: "Autogen Experiments",
+        topic: "Multi-agent experiments",
+        category: "Agentic AI Labs",
+        summary: "A lab space for agent orchestration, tool use, and iteration around Autogen patterns.",
+        createdDate: "2024-08-02",
+        url: "https://github.com/pd-illinois/Autogen_experiments",
+        tags: ["Agents", "Autogen", "Experimentation"]
+      },
+      {
+        id: "llm-frameworks-lc-sk",
+        name: "LLM_Frameworks_LC_SK",
+        topic: "LLM frameworks",
+        category: "Framework Labs",
+        summary: "A framework-oriented repository for testing LLM application patterns and integration ideas.",
+        createdDate: "2023-07-07",
+        url: "https://github.com/pd-illinois/LLM_Frameworks_LC_SK",
+        tags: ["LLMs", "Frameworks", "Azure AI"]
+      },
+      {
+        id: "langchain-demos",
+        name: "Langchain_Demos",
+        topic: "LangChain demos",
+        category: "Framework Labs",
+        summary: "Hands-on demos centered on LangChain flows, patterns, and practical integrations.",
+        createdDate: "2023-06-20",
+        url: "https://github.com/pd-illinois/Langchain_Demos",
+        tags: ["LangChain", "Demos", "Patterns"]
+      },
+      {
+        id: "lda-demo",
+        name: "LDA_Demo",
+        topic: "Topic modeling",
+        category: "NLP and Topic Modeling",
+        summary: "A classic NLP experiment focused on LDA and topic discovery workflows.",
+        createdDate: "2023-01-04",
+        url: "https://github.com/pd-illinois/LDA_Demo",
+        tags: ["NLP", "LDA", "Topic Modeling"]
+      }
+    ];
+
+    let blogCatalog = [...fallbackBlogCatalog];
+    let slides = [];
+    let navSlideIndexes = [];
+    let REPOS_INDEX = -1;
+    let AUTHOR_INDEX = -1;
+
+    const blogContentCache = new Map();
+    let activeBlogCategory = "All";
+    let activeBlogSort = "Newest";
+
+    const toc = document.getElementById("toc");
+    const book = document.getElementById("book");
+    const pageLabel = document.getElementById("pageLabel");
+    const playBtn = document.getElementById("playBtn");
+    const zoomOutBtn = document.getElementById("zoomOutBtn");
+    const zoomInBtn = document.getElementById("zoomInBtn");
+    const sidebarToggleBtn = document.getElementById("sidebarToggleBtn");
+    const journeyBasePath = document.getElementById("journeyBasePath");
+    const journeyProgressPath = document.getElementById("journeyProgressPath");
+    const journeyTraveler = document.getElementById("journeyTraveler");
+    const journeyPoints = document.getElementById("journeyPoints");
+    const canvasViewport = document.getElementById("canvasViewport");
+    const canvasStage = document.getElementById("canvasStage");
+    const canvasLinks = document.getElementById("canvasLinks");
+    const canvasPrevBtn = document.getElementById("canvasPrevBtn");
+    const canvasNextBtn = document.getElementById("canvasNextBtn");
+    const canvasOverviewBtn = document.getElementById("canvasOverviewBtn");
+    const canvasHomeBtn = document.getElementById("canvasHomeBtn");
+    const themeToggleBtn = document.getElementById("themeToggleBtn");
+    const mapLegendPanel = document.getElementById("mapLegendPanel");
+
+    let current = BLOG_ROOT_INDEX;
+    let playing = false;
+    let timer = null;
+    let sidebarCollapsed = false;
+    let journeyCoords = [];
+    let journeyLength = 0;
+    let canvasCoords = [];
+    let canvasOverview = false;
+    let canvasScale = 1;
+    let canvasBounds = null;
+    let slideNumberByIndex = new Map();
+    let mapBlogCategoryFilter = "All";
+    let mapRepoCategoryFilter = "All";
+    const isFileProtocol = window.location.protocol === "file:";
+
+    function formatSegment(n) {
+      return String(n).padStart(2, "0");
+    }
+
+    function buildSlideNumberMap() {
+      slideNumberByIndex = new Map();
+
+      const assignChildren = (parentIdx, parentLabel) => {
+        let childCounter = 0;
+        slides.forEach((s, i) => {
+          if (s.parent === parentIdx) {
+            childCounter += 1;
+            const childLabel = `${parentLabel}.${formatSegment(childCounter)}`;
+            slideNumberByIndex.set(i, childLabel);
+            assignChildren(i, childLabel);
+          }
+        });
+      };
+
+      let rootCounter = 0;
+      slides.forEach((s, i) => {
+        if (typeof s.parent !== "number") {
+          rootCounter += 1;
+          slideNumberByIndex.set(i, formatSegment(rootCounter));
+        }
+      });
+
+      slides.forEach((s, i) => {
+        if (typeof s.parent !== "number") {
+          assignChildren(i, slideNumberByIndex.get(i));
+        }
+      });
+    }
+
+    function toTimestamp(d) {
+      const t = Date.parse(d || "");
+      return Number.isNaN(t) ? 0 : t;
+    }
+
+    function sortBlogs(list, sortBy) {
+      const copy = [...list];
+      if (sortBy === "Newest") {
+        return copy.sort((a, b) => toTimestamp(b.date) - toTimestamp(a.date));
+      }
+      if (sortBy === "Category") {
+        return copy.sort((a, b) => {
+          const c = (a.category || "").localeCompare(b.category || "");
+          if (c !== 0) return c;
+          return toTimestamp(b.date) - toTimestamp(a.date);
+        });
+      }
+      return copy.sort((a, b) => {
+        const s = (a.source || a.kind || "").localeCompare(b.source || b.kind || "");
+        if (s !== 0) return s;
+        return toTimestamp(b.date) - toTimestamp(a.date);
+      });
+    }
+
+    function buildBlogRootBody() {
+      return `
+        <div class="tm">
+          <p class="tm-comment">Blog parent page. Blog.Name and Link both open the blog target.</p>
+          <p class="tm-lead">Common structure: Blog.Name, Topic, Category, Link. Use category filters and sort controls for organization.</p>
+          <div class="blog-controls">
+            <div class="blog-filters" data-role="blog-filters"></div>
+            <div class="blog-sorts" data-role="blog-sorts"></div>
+          </div>
+          <div class="blog-grid" data-role="blog-grid"></div>
+          <div class="blog-empty" data-role="blog-empty" hidden>No blogs found for this category.</div>
+        </div>
+      `;
+    }
+
+    function buildBlogChildBody(blog) {
+      const linkValue = blog.kind === "external"
+        ? `<a class="tm-link" target="_blank" rel="noreferrer" href="${blog.url}">open blog</a>`
+        : `<a class="tm-link" href="#" data-action="open-blog" data-blog-id="${blog.id}">open blog</a>`;
+
+      const content = blog.kind === "external"
+        ? `<p class="tm-lead">${blog.summary}</p><a class="tm-link" target="_blank" rel="noreferrer" href="${blog.url}">open linkedin post</a>`
+        : `<div class="tm-markdown" data-markdown-target="${blog.id}">loading markdown content...</div>`;
+
+      return `
+        <div class="tm">
+          <p class="tm-comment">Blog child page.</p>
+          <div class="tm-mod">
+            <div class="h"><span>blog.meta</span><span class="val">child</span></div>
+            <div class="kv">
+              <div><span class="k">Blog.Name</span><span class="v">${blog.name}</span></div>
+              <div><span class="k">Topic</span><span class="v">${blog.topic}</span></div>
+              <div><span class="k">Category</span><span class="v">${blog.category}</span></div>
+              <div><span class="k">Link</span><span class="v">${linkValue}</span></div>
+            </div>
+          </div>
+          ${content}
+          <div class="tm-mod">
+            <div class="h"><span>related</span><span class="val">same category</span></div>
+            <div class="kv"><div><span class="k">items</span><span class="v"><div class="related-list" data-related-target="${blog.id}">loading...</div></span></div></div>
+          </div>
+          <button class="tm-btn" data-action="back-blog-root">back to blog root</button>
+        </div>
+      `;
+    }
+
+    function groupReposByCategory() {
+      return repoCatalog.reduce((groups, repo) => {
+        const bucket = groups.get(repo.category) || [];
+        bucket.push(repo);
+        groups.set(repo.category, bucket);
+        return groups;
+      }, new Map());
+    }
+
+    function buildRepoRootBody() {
+      const groups = groupReposByCategory();
+      const groupMarkup = [...groups.entries()].map(([category, repos]) => {
+        const repoRows = repos.map((repo) => `
+          <div>
+            <span class="k">${repo.name}</span>
+            <span class="v">${repo.status === "coming soon" ? "coming soon" : `<a class="tm-link" target="_blank" rel="noreferrer" href="${repo.url}">${repo.linkText || "GitHub"}</a>`}</span>
+          </div>
+        `).join("");
+
+        return `
+          <div class="tm-mod">
+            <div class="h"><span>${category}</span><span class="val">${repos.length} repos</span></div>
+            <div class="kv">${repoRows}</div>
+          </div>
+        `;
+      }).join("");
+
+      return `
+        <div class="tm">
+          <p class="tm-comment">Repository parent page. Each child card below opens a GitHub repo.</p>
+          <p class="tm-lead">Best fit grouping: app prototypes, agentic labs, framework labs, and NLP/topic modeling. The child nodes act like repo icons, while the parent page gives a quick curated index.</p>
+          <div class="tm-mods">${groupMarkup}</div>
+        </div>
+      `;
+    }
+
+    function buildRepoChildBody(repo) {
+      const linkMarkup = repo.status === "coming soon"
+        ? `<span class="v">coming soon</span>`
+        : `<a class="tm-link" target="_blank" rel="noreferrer" href="${repo.url}">${repo.linkText || "open GitHub repo"}</a>`;
+
+      return `
+        <div class="tm">
+          <div class="tm-boot repo-code-card">
+            <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span>repo -- child</span></div>
+            <div class="body">
+              <p class="prompt"><b>></b> ./repo open "${repo.name}"</p>
+              <h3>${repo.name}<span class="cur"></span></h3>
+              <div class="repo-meta">
+                <div class="row"><span class="k">Repo Name</span><span class="v">${repo.name}</span></div>
+                <div class="row"><span class="k">Category</span><span class="v">${repo.category}</span></div>
+                <div class="row"><span class="k">Link</span><span class="v">${linkMarkup}</span></div>
+              </div>
+            </div>
+          </div>
+          <button class="tm-btn" data-action="back-repo-root">back to repo root</button>
+        </div>
+      `;
+    }
+
+    function makeSlides() {
+      const childSlides = blogCatalog.map((blog, idx) => {
+        const col = idx % 2;
+        const row = Math.floor(idx / 2);
+        return {
+          key: `blog-child-${blog.id}`,
+          blogId: blog.id,
+          title: `Blog: ${blog.name}`,
+          subtitle: `child / ${(blog.category || "blog").toLowerCase()}`,
+          parent: BLOG_ROOT_INDEX,
+          thumb: true,
+          hiddenInToc: true,
+          mapPos: { x: 1560 + (col * 520), y: 780 + (row * 360) },
+          createdDate: blog.createdDate || blog.date,
+          blog,
+          body: buildBlogChildBody(blog)
+        };
+      });
+
+      const repoRootIndex = 1 + blogCatalog.length;
+      const repoSlides = repoCatalog.map((repo, idx) => ({
+        key: `repo-${repo.id}`,
+        title: repo.name,
+        subtitle: `${repo.category.toLowerCase()} / ${formatSegment(idx + 1)}`,
+        parent: repoRootIndex,
+        thumb: true,
+        hiddenInToc: true,
+        mapPos: { x: 1680 + (idx % 3) * 520, y: 1100 + Math.floor(idx / 3) * 360 },
+        createdDate: repo.createdDate,
+        repo,
+        body: buildRepoChildBody(repo)
+      }));
+
+      return [
+        {
+          key: "blogs-root",
+          title: "Blogs",
+          subtitle: "index / 01",
+          mapPos: { x: 520, y: 460 },
+          createdDate: "2026-07-20",
+          body: buildBlogRootBody()
+        },
+        ...childSlides,
+        {
+          key: "repos-root",
+          title: "Repos",
+          subtitle: "index / 02",
+          mapPos: { x: 1660, y: 460 },
+          createdDate: "2026-07-23",
+          body: buildRepoRootBody()
+        },
+        ...repoSlides,
+        {
+          key: "author-root",
+          title: "Author",
+          subtitle: "profile / 03",
+          cover: true,
+          mapPos: { x: 2800, y: 460 },
+          createdDate: "2026-07-23",
+          body: `
+            <div class="tm">
+              <div class="tm-boot">
+                <div class="bar"><span class="dots"><i></i><i></i><i></i></span><span>pd-illinois.author --profile</span></div>
+                <div class="body">
+                  <p class="prompt"><b>></b> ./open --author "Prateek Dhiman"</p>
+                  <h3>Prateek Dhiman<span class="cur"></span></h3>
+                  <p class="role">Principal Cloud Solution Architect at Microsoft, focused on helping enterprises design and deliver production-grade AI solutions that drive real business impact.</p>
+                  <p class="desc">My work sits at the intersection of AI innovation and enterprise execution, guiding organizations from early-stage ideation to scalable, secure, and resilient deployments on Azure. I specialize in Copilot, Azure AI, and agent-based architectures, working closely with customers to transform advanced capabilities into meaningful outcomes.</p>
+                  <div class="tm-tags"><span class="tm-tag">Azure</span><span class="tm-tag">Agentic AI</span><span class="tm-tag">ML</span><span class="tm-tag">Data Science</span></div>
+                  <a class="tm-link" target="_blank" rel="noreferrer" href="https://www.linkedin.com/in/prateek-dhiman/">Prateek Dhiman | LinkedIn</a>
+                </div>
+              </div>
+            </div>
+          `
+        }
+      ];
+    }
+
+    function rebuildSlidesFromCatalog() {
+      slides = makeSlides();
+      buildSlideNumberMap();
+      navSlideIndexes = slides.map((s, i) => ({ s, i })).filter((x) => !x.s.hiddenInToc).map((x) => x.i);
+      REPOS_INDEX = slides.findIndex((s) => s.key === "repos-root");
+      AUTHOR_INDEX = slides.findIndex((s) => s.key === "author-root");
+    }
+
+    function getNavIndexForSlide(slideIdx) {
+      const direct = navSlideIndexes.indexOf(slideIdx);
+      if (direct >= 0) return direct;
+      const parent = slides[slideIdx].parent;
+      if (typeof parent === "number") return navSlideIndexes.indexOf(parent);
+      return 0;
+    }
+
+    function getOverviewPosition(idx) {
+      const slide = slides[idx];
+      if (typeof slide.parent === "number") {
+        const parentPos = getOverviewPosition(slide.parent);
+        const siblings = slides
+          .map((s, i) => ({ s, i }))
+          .filter((x) => x.s.parent === slide.parent)
+          .map((x) => x.i);
+        const siblingPos = siblings.indexOf(idx);
+        const group = Math.floor(siblingPos / 5);
+        const inGroup = siblingPos % 5;
+        const xOffsets = [0, -220, 220, -360, 360];
+        return {
+          x: parentPos.x + xOffsets[inGroup] + (group * 70),
+          y: parentPos.y + 620 + (siblingPos * 360)
+        };
+      }
+      if (slide.mapPos) return slide.mapPos;
+      const t = slides.length === 1 ? 0 : idx / (slides.length - 1);
+      return { x: 260 + t * (3200 - 520), y: 1100 };
+    }
+
+    function getCanvasCardSize(slide, idx = -1) {
+      if (slide && typeof slide.parent === "number") {
+        const isActiveChild = idx === current;
+        const useFullSize = !canvasOverview && isActiveChild;
+        const width = useFullSize ? 820 : 410;
+        const height = useFullSize ? 520 : 260;
+        return { width, height, halfW: Math.round(width / 2), halfH: Math.round(height / 2) };
+      }
+      const width = 820;
+      const height = 520;
+      return { width, height, halfW: Math.round(width / 2), halfH: Math.round(height / 2) };
+    }
+
+    function getBlogChildIndexes() {
+      return slides.map((s, i) => ({ s, i })).filter((x) => x.s.parent === BLOG_ROOT_INDEX).map((x) => x.i);
+    }
+
+    function getBlogSlideIndex(blogId) {
+      return slides.findIndex((s) => s.blogId === blogId);
+    }
+
+    function isSlideVisibleInMap(slide) {
+      if (!canvasOverview) return true;
+      if (typeof slide.parent !== "number") return true;
+      const parentKey = slides[slide.parent]?.key;
+      if (parentKey === "blogs-root") {
+        if (mapBlogCategoryFilter === "All") return true;
+        return slide.blog?.category === mapBlogCategoryFilter;
+      }
+      if (parentKey === "repos-root") {
+        if (mapRepoCategoryFilter === "All") return true;
+        return slide.repo?.category === mapRepoCategoryFilter;
+      }
+      return true;
+    }
+
+    function getScrollableAncestor(target) {
+      let node = target instanceof Element ? target : null;
+      while (node && node !== canvasViewport && node !== document.body) {
+        const style = getComputedStyle(node);
+        const overflowY = style.overflowY;
+        const canScrollY = (overflowY === "auto" || overflowY === "scroll") && node.scrollHeight > node.clientHeight + 1;
+        if (canScrollY) return node;
+        node = node.parentElement;
+      }
+      return null;
+    }
+
+    function renderRelatedBlogs(blogId) {
+      const blog = blogCatalog.find((b) => b.id === blogId);
+      if (!blog) return;
+
+      const related = sortBlogs(
+        blogCatalog.filter((b) => b.id !== blog.id && b.category === blog.category),
+        "Newest"
+      );
+
+      const markup = related.length
+        ? related.map((r) => `<a class="related-item" href="#" data-action="open-blog" data-blog-id="${r.id}">${r.name}</a>`).join("")
+        : "<span class=\"text-muted\">No related blogs yet.</span>";
+
+      document.querySelectorAll(`[data-related-target="${blogId}"]`).forEach((host) => {
+        host.innerHTML = markup;
+      });
+    }
+
+    function renderBlogCards(category = "All", sortBy = activeBlogSort) {
+      activeBlogCategory = category;
+      activeBlogSort = sortBy;
+
+      const blogNode = canvasStage.querySelector(`[data-idx="${BLOG_ROOT_INDEX}"]`);
+      if (!blogNode) return;
+
+      const filtersHost = blogNode.querySelector('[data-role="blog-filters"]');
+      const sortsHost = blogNode.querySelector('[data-role="blog-sorts"]');
+      const gridHost = blogNode.querySelector('[data-role="blog-grid"]');
+      const emptyHost = blogNode.querySelector('[data-role="blog-empty"]');
+      if (!filtersHost || !sortsHost || !gridHost || !emptyHost) return;
+
+      const categories = ["All", ...new Set(blogCatalog.map((b) => b.category))];
+      filtersHost.innerHTML = categories
+        .map((cat) => `<button class="blog-filter${cat === category ? " active" : ""}" data-action="filter-category" data-category="${cat}">${cat}</button>`)
+        .join("");
+
+      sortsHost.innerHTML = SORT_OPTIONS
+        .map((opt) => `<button class="blog-sort${opt === sortBy ? " active" : ""}" data-action="sort-blogs" data-sort="${opt}">${opt}</button>`)
+        .join("");
+
+      const filtered = category === "All" ? blogCatalog : blogCatalog.filter((b) => b.category === category);
+      const sorted = sortBlogs(filtered, sortBy);
+
+      if (!sorted.length) {
+        gridHost.innerHTML = "";
+        emptyHost.hidden = false;
+        return;
+      }
+
+      emptyHost.hidden = true;
+      gridHost.innerHTML = sorted.map((blog) => {
+        return `
+          <article class="blog-card">
+            <h4><a class="blog-open-link" href="#" data-action="open-blog" data-blog-id="${blog.id}">${blog.name}</a></h4>
+            <p>${blog.summary}</p>
+            <div class="blog-meta">
+              <span class="blog-pill">${blog.topic}</span>
+              <span class="blog-pill" data-action="filter-category" data-category="${blog.category}">${blog.category}</span>
+              <span class="blog-pill">${blog.source || blog.kind}</span>
+            </div>
+            <div class="blog-open-row">
+              <a class="blog-open-link" href="#" data-action="open-blog" data-blog-id="${blog.id}">open link</a>
+            </div>
+          </article>
+        `;
+      }).join("");
+    }
+
+    function renderMapLegend() {
+      if (!mapLegendPanel) return;
+
+      const mapFiltersHost = mapLegendPanel.querySelector('[data-role="map-blog-filters"]');
+      const mapSortsHost = mapLegendPanel.querySelector('[data-role="map-blog-sorts"]');
+      const mapBlogListHost = mapLegendPanel.querySelector('[data-role="map-blog-list"]');
+      const mapRepoListHost = mapLegendPanel.querySelector('[data-role="map-repo-list"]');
+      if (!mapFiltersHost || !mapSortsHost || !mapBlogListHost || !mapRepoListHost) return;
+
+      const categories = ["All", ...new Set(blogCatalog.map((b) => b.category))];
+      mapFiltersHost.innerHTML = categories
+        .map((cat) => `<button class="blog-filter${cat === activeBlogCategory ? " active" : ""}" data-action="filter-category" data-category="${cat}">${cat}</button>`)
+        .join("");
+
+      mapSortsHost.innerHTML = SORT_OPTIONS
+        .map((opt) => `<button class="blog-sort${opt === activeBlogSort ? " active" : ""}" data-action="sort-blogs" data-sort="${opt}">${opt}</button>`)
+        .join("");
+
+      const filtered = activeBlogCategory === "All"
+        ? blogCatalog
+        : blogCatalog.filter((b) => b.category === activeBlogCategory);
+      const sorted = sortBlogs(filtered, activeBlogSort);
+      const blogCategories = [...new Set(sorted.map((b) => (b.category || "").trim()).filter(Boolean))];
+
+      mapBlogListHost.innerHTML = blogCategories.length
+        ? blogCategories.map((cat) => `
+          <div class="map-blog-item">
+            <span>${cat}</span>
+          </div>
+        `).join("")
+        : `<div class="map-blog-item"><span>No categories</span></div>`;
+
+      const repoCategories = [...groupReposByCategory().entries()];
+      mapRepoListHost.innerHTML = repoCategories.length
+        ? repoCategories.map(([category]) => `
+          <button class="map-repo-item${category === mapRepoCategoryFilter ? " active" : ""}" data-action="filter-category" data-scope="repo" data-category="${category}">
+            <span>${category}</span>
+          </button>
+        `).join("")
+        : `<div class="map-repo-item"><span>No categories</span></div>`;
+    }
+
+    function render() {
+      toc.innerHTML = "";
+      book.innerHTML = "";
+      canvasStage.innerHTML = "";
+      canvasLinks.innerHTML = "";
+
+      navSlideIndexes.forEach((slideIdx, navIdx) => {
+        const slide = slides[slideIdx];
+        const label = slideNumberByIndex.get(slideIdx) || formatSegment(navIdx + 1);
+        const b = document.createElement("button");
+        b.className = getNavIndexForSlide(current) === navIdx ? "active" : "";
+        b.innerHTML = `<span class="idx">${label}</span> ${slide.title}<span class="meta">${slide.subtitle}</span>`;
+        b.addEventListener("click", () => goTo(slideIdx, true));
+        toc.appendChild(b);
+
+        const page = document.createElement("article");
+        page.className = `page${slide.cover ? " coverpage" : ""}`;
+        page.dataset.idx = slideIdx;
+        page.innerHTML = `<div class="page-body">${slide.body}</div>`;
+        book.appendChild(page);
+      });
+
+      buildJourney();
+      buildCanvas();
+      sync();
+      renderBlogCards(activeBlogCategory, activeBlogSort);
+      renderMapLegend();
+    }
+
+    function buildJourney() {
+      const total = navSlideIndexes.length;
+      const startX = 30;
+      const endX = 970;
+      const hi = 34;
+      const lo = 84;
+      journeyCoords = [];
+
+      for (let i = 0; i < total; i++) {
+        const t = total === 1 ? 0 : i / (total - 1);
+        const x = startX + (endX - startX) * t;
+        const y = i % 2 === 0 ? lo : hi;
+        journeyCoords.push({ x, y });
+      }
+
+      let d = "";
+      journeyCoords.forEach((p, idx) => {
+        if (idx === 0) {
+          d += `M ${p.x} ${p.y}`;
+          return;
+        }
+        const prev = journeyCoords[idx - 1];
+        const midX = (prev.x + p.x) / 2;
+        d += ` L ${midX} ${prev.y} L ${midX} ${p.y} L ${p.x} ${p.y}`;
+      });
+
+      journeyBasePath.setAttribute("d", d);
+      journeyProgressPath.setAttribute("d", d);
+      journeyLength = journeyProgressPath.getTotalLength();
+      journeyProgressPath.style.strokeDasharray = `${journeyLength}`;
+      journeyProgressPath.style.strokeDashoffset = `${journeyLength}`;
+      journeyPoints.innerHTML = "";
+
+      journeyCoords.forEach((p, navIdx) => {
+        const dot = document.createElement("span");
+        const slideIdx = navSlideIndexes[navIdx];
+        const label = slideNumberByIndex.get(slideIdx) || String(navIdx + 1);
+        dot.className = "journey-dot";
+        dot.textContent = label;
+        dot.style.left = `${(p.x / 1000) * 100}%`;
+        dot.style.top = `${(p.y / 120) * 100}%`;
+        dot.setAttribute("role", "button");
+        dot.setAttribute("tabindex", "0");
+        dot.setAttribute("aria-label", `Go to node ${label}`);
+        dot.addEventListener("click", () => goTo(navSlideIndexes[navIdx], true));
+        dot.addEventListener("keydown", (e) => {
+          if (e.key === "Enter" || e.key === " ") {
+            e.preventDefault();
+            goTo(navSlideIndexes[navIdx], true);
+          }
+        });
+        journeyPoints.appendChild(dot);
+      });
+    }
+
+    function edgePath(a, b, kind = "main") {
+      if (kind === "main" && Math.abs(a.y - b.y) < 2) {
+        const dir = a.x <= b.x ? 1 : -1;
+        const sx = a.x + (dir * a.card.halfW);
+        const ex = b.x - (dir * b.card.halfW);
+        return `M ${sx} ${a.y} L ${ex} ${b.y}`;
+      }
+
+      if (kind === "child") {
+        const sy = a.y + a.card.halfH;
+        const ey = b.y - b.card.halfH;
+        if (Math.abs(a.x - b.x) < 2) {
+          return `M ${a.x} ${sy} L ${b.x} ${ey}`;
+        }
+        const midY = sy + Math.max(34, ((ey - sy) * 0.4));
+        return `M ${a.x} ${sy} L ${a.x} ${midY} L ${b.x} ${midY} L ${b.x} ${ey}`;
+      }
+
+      const dirY = a.y <= b.y ? 1 : -1;
+      const sy = a.y + (dirY * a.card.halfH);
+      const ey = b.y - (dirY * b.card.halfH);
+      const midX = (a.x + b.x) / 2;
+      return `M ${a.x} ${sy} L ${midX} ${sy} L ${midX} ${ey} L ${b.x} ${ey}`;
+    }
+
+    function buildCanvas() {
+      canvasCoords = [];
+      canvasBounds = null;
+      canvasStage.innerHTML = "";
+
+      slides.forEach((slide, i) => {
+        if (!isSlideVisibleInMap(slide)) return;
+        const pos = getOverviewPosition(i);
+        const card = getCanvasCardSize(slide, i);
+        canvasCoords.push({ x: pos.x, y: pos.y, card });
+
+        const node = document.createElement("article");
+        node.className = `canvas-node${slide.cover ? " node-cover" : ""}${slide.thumb || typeof slide.parent === "number" ? " canvas-node-thumb" : ""}`;
+        node.dataset.idx = i;
+        node.style.left = `${pos.x - card.halfW}px`;
+        node.style.top = `${pos.y - card.halfH}px`;
+        node.style.width = `${card.width}px`;
+        node.style.height = `${card.height}px`;
+        node.style.zIndex = `${slides.length - i}`;
+        const label = slideNumberByIndex.get(i) || formatSegment(i + 1);
+        node.innerHTML = `
+          <div class="canvas-node-head">
+            <div class="canvas-node-no">${label}</div>
+            <div><h2>${slide.title}</h2><p>${slide.subtitle}</p></div>
+            <div class="dots"><i></i><i></i><i></i></div>
+          </div>
+          <div class="canvas-node-body">${slide.body}</div>`;
+        node.addEventListener("click", () => goTo(i, true));
+        canvasStage.appendChild(node);
+      });
+
+      canvasBounds = {
+        minX: Math.min(...canvasCoords.map((p) => p.x - p.card.halfW)),
+        maxX: Math.max(...canvasCoords.map((p) => p.x + p.card.halfW)),
+        minY: Math.min(...canvasCoords.map((p) => p.y - p.card.halfH)),
+        maxY: Math.max(...canvasCoords.map((p) => p.y + p.card.halfH))
+      };
+
+      const childEdges = [];
+      slides.forEach((slide, idx) => {
+        if (typeof slide.parent === "number") {
+          if (!isSlideVisibleInMap(slides[slide.parent])) return;
+          childEdges.push({
+            kind: "child",
+            d: edgePath(canvasCoords[slide.parent], canvasCoords[idx], "child"),
+            opacity: 0.95,
+            dash: "6 6",
+            width: 3.2
+          });
+        }
+      });
+
+      const mainEdges = [];
+      if (REPOS_INDEX > -1 && AUTHOR_INDEX > -1) {
+        const roots = [canvasCoords[BLOG_ROOT_INDEX], canvasCoords[REPOS_INDEX], canvasCoords[AUTHOR_INDEX]];
+        const busY = Math.min(...roots.map((r) => r.y - r.card.halfH)) - 70;
+
+        mainEdges.push({
+          kind: "main",
+          d: `M ${roots[0].x} ${busY} L ${roots[2].x} ${busY}`,
+          opacity: 0.95,
+          dash: "none",
+          width: 4.2
+        });
+
+        roots.forEach((r) => {
+          const topY = r.y - r.card.halfH;
+          mainEdges.push({
+            kind: "main",
+            d: `M ${r.x} ${busY} L ${r.x} ${topY}`,
+            opacity: 0.95,
+            dash: "none",
+            width: 3.4
+          });
+        });
+      } else if (REPOS_INDEX > -1) {
+        mainEdges.push({ kind: "main", d: edgePath(canvasCoords[BLOG_ROOT_INDEX], canvasCoords[REPOS_INDEX], "main"), opacity: 0.95, dash: "none", width: 4.2 });
+      }
+
+      const cssVars = getComputedStyle(document.body);
+      const mainLinkColor = cssVars.getPropertyValue("--canvas-main-link").trim() || "#33c47b";
+      const childLinkColor = cssVars.getPropertyValue("--canvas-child-link").trim() || "#4cc5f0";
+      const nodeDotColor = cssVars.getPropertyValue("--canvas-node-dot").trim() || "#57e39a";
+
+      const pathMarkup = [...childEdges, ...mainEdges]
+        .map((edge) => {
+          const stroke = edge.kind === "child" ? childLinkColor : mainLinkColor;
+          return `<path d="${edge.d}" fill="none" stroke="${stroke}" stroke-opacity="${edge.opacity}" stroke-width="${edge.width || 2.5}" stroke-dasharray="${edge.dash || "none"}" stroke-linecap="round"></path>`;
+        })
+        .join("");
+
+      const nodesMarkup = canvasCoords.map((p) => `<rect x="${p.x - 5}" y="${p.y - 5}" width="10" height="10" fill="${nodeDotColor}"></rect>`).join("");
+      canvasLinks.innerHTML = `${pathMarkup}${nodesMarkup}`;
+      renderBlogCards(activeBlogCategory, activeBlogSort);
+      renderMapLegend();
+    }
+
+    function sync() {
+      const navPos = getNavIndexForSlide(current);
+      [...toc.children].forEach((btn, idx) => btn.classList.toggle("active", idx === navPos));
+      const currentLabel = slideNumberByIndex.get(current) || formatSegment(navPos + 1);
+      pageLabel.textContent = `${currentLabel}/${formatSegment(navSlideIndexes.length)}`;
+      const ratio = navSlideIndexes.length === 1 ? 1 : navPos / (navSlideIndexes.length - 1);
+      journeyProgressPath.style.strokeDashoffset = `${journeyLength - journeyLength * ratio}`;
+      const mark = journeyCoords[navPos] || journeyCoords[0];
+
+      if (mark) {
+        journeyTraveler.setAttribute("cx", mark.x.toFixed(2));
+        journeyTraveler.setAttribute("cy", mark.y.toFixed(2));
+      }
+
+      [...journeyPoints.children].forEach((dot, idx) => {
+        dot.classList.toggle("done", idx < navPos);
+        dot.classList.toggle("active", idx === navPos);
+      });
+
+      updateCanvasFocus();
+      updatePlayIcon();
+      document.body.classList.toggle("map-overview", canvasOverview);
+    }
+
+    function updateCanvasFocus() {
+      const vp = canvasViewport.getBoundingClientRect();
+      if (!vp.width || !vp.height) return;
+
+      let tx = 0;
+      let ty = 0;
+      let scale = 1;
+
+      if (canvasOverview || !canvasCoords[current]) {
+        const b = canvasBounds;
+        if (!b) return;
+        canvasStage.style.transition = "transform .2s ease";
+        canvasLinks.style.transition = "transform .2s ease";
+        scale = Math.min((vp.width - 70) / (b.maxX - b.minX), (vp.height - 70) / (b.maxY - b.minY), 0.42);
+        const cx = (b.minX + b.maxX) / 2;
+        const cy = (b.minY + b.maxY) / 2;
+        tx = vp.width / 2 - cx * scale;
+        ty = vp.height / 2 - cy * scale;
+        canvasStage.classList.remove("focused");
+      } else {
+        canvasStage.style.transition = "transform .55s ease";
+        canvasLinks.style.transition = "transform .55s ease";
+        const active = canvasCoords[current];
+        const fitScale = Math.min((vp.width * 0.9) / active.card.width, (vp.height * 0.9) / active.card.height);
+        scale = canvasScale * fitScale;
+        tx = vp.width / 2 - active.x * scale;
+        ty = vp.height / 2 - active.y * scale;
+        canvasStage.classList.add("focused");
+      }
+
+      canvasStage.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      canvasLinks.style.transform = `translate(${tx}px, ${ty}px) scale(${scale})`;
+      canvasLinks.style.transformOrigin = "0 0";
+
+      const total = slides.length;
+      const prevIdx = total > 1 ? (current - 1 + total) % total : -1;
+      const nextIdx = total > 1 ? (current + 1) % total : -1;
+
+      [...canvasStage.children].forEach((node, idx) => {
+        const isFocused = !canvasOverview;
+        const isActive = isFocused && idx === current;
+        const isAdjacent = isFocused && total > 1 && (idx === prevIdx || idx === nextIdx);
+        node.classList.toggle("active", isActive);
+        node.classList.toggle("adjacent", isAdjacent);
+        node.classList.toggle("adjacent-prev", isAdjacent && idx === prevIdx);
+        node.classList.toggle("adjacent-next", isAdjacent && idx === nextIdx);
+        node.classList.toggle("dim", isFocused && !isActive && !isAdjacent);
+
+      });
+    }
+
+    function setCanvasOverview() {
+      canvasOverview = true;
+      canvasScale = 1;
+      buildCanvas();
+      sync();
+    }
+
+    async function ensureLocalBlogLoaded(idx) {
+      const slide = slides[idx];
+      if (!slide || !slide.blog || slide.blog.kind !== "local") return;
+
+      const blog = slide.blog;
+      const cacheKey = blog.path || blog.id;
+      if (!blogContentCache.has(cacheKey)) {
+        if (blog.contentHtml && blog.contentHtml.trim()) {
+          blogContentCache.set(cacheKey, blog.contentHtml);
+        } else if (isFileProtocol && blog.contentMarkdown && blog.contentMarkdown.trim()) {
+          blogContentCache.set(cacheKey, markdownToHtml(blog.contentMarkdown));
+        } else {
+        try {
+          const response = await fetch(blog.path);
+          if (!response.ok) throw new Error(`Failed to load ${blog.path}`);
+          const mdText = await response.text();
+          blogContentCache.set(cacheKey, markdownToHtml(mdText));
+        } catch (err) {
+          if (blog.contentMarkdown && blog.contentMarkdown.trim()) {
+            blogContentCache.set(cacheKey, markdownToHtml(blog.contentMarkdown));
+          } else {
+            const fallbackMsg = `Unable to load markdown content from ${blog.path}. ${String(err.message || err)}. Run via local server or GitHub Pages for file fetch support.`;
+            blogContentCache.set(cacheKey, `<p>${fallbackMsg}</p>`);
+          }
+        }
+        }
+      }
+
+      const html = blogContentCache.get(cacheKey);
+      document.querySelectorAll(`[data-markdown-target="${blog.id}"]`).forEach((el) => {
+        el.innerHTML = html;
+      });
+    }
+
+    function applyTheme(theme) {
+      const useLight = theme === "light";
+      document.body.classList.toggle("light-theme", useLight);
+      const label = useLight ? "dark" : "light";
+      const title = useLight ? "Switch to dark mode" : "Switch to light mode";
+      if (themeToggleBtn) {
+        themeToggleBtn.textContent = label;
+        themeToggleBtn.setAttribute("title", title);
+        themeToggleBtn.setAttribute("aria-label", title);
+      }
+      localStorage.setItem("pdBlogTheme", theme);
+    }
+
+    function initTheme() {
+      const saved = localStorage.getItem("pdBlogTheme");
+      applyTheme(saved === "light" ? "light" : "dark");
+    }
+
+    function markdownToHtml(md) {
+      const escapeHtml = (s) => s
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&#39;");
+
+      const lines = md.replace(/\r/g, "").split("\n");
+      let html = "";
+      let inCode = false;
+      let inUl = false;
+      let inOl = false;
+
+      const closeLists = () => {
+        if (inUl) { html += "</ul>"; inUl = false; }
+        if (inOl) { html += "</ol>"; inOl = false; }
+      };
+
+      for (const rawLine of lines) {
+        const line = rawLine.trimEnd();
+
+        if (line.startsWith("```")) {
+          closeLists();
+          if (!inCode) {
+            html += "<pre><code>";
+            inCode = true;
+          } else {
+            html += "</code></pre>";
+            inCode = false;
+          }
+          continue;
+        }
+
+        if (inCode) {
+          html += `${escapeHtml(line)}\n`;
+          continue;
+        }
+
+        if (!line.trim()) {
+          closeLists();
+          continue;
+        }
+
+        if (line.startsWith("# ")) {
+          closeLists();
+          html += `<h1>${escapeHtml(line.slice(2))}</h1>`;
+          continue;
+        }
+        if (line.startsWith("## ")) {
+          closeLists();
+          html += `<h2>${escapeHtml(line.slice(3))}</h2>`;
+          continue;
+        }
+        if (line.startsWith("### ")) {
+          closeLists();
+          html += `<h3>${escapeHtml(line.slice(4))}</h3>`;
+          continue;
+        }
+
+        const ulMatch = /^[-*]\s+(.+)/.exec(line);
+        if (ulMatch) {
+          if (inOl) { html += "</ol>"; inOl = false; }
+          if (!inUl) { html += "<ul>"; inUl = true; }
+          html += `<li>${escapeHtml(ulMatch[1])}</li>`;
+          continue;
+        }
+
+        const olMatch = /^\d+\.\s+(.+)/.exec(line);
+        if (olMatch) {
+          if (inUl) { html += "</ul>"; inUl = false; }
+          if (!inOl) { html += "<ol>"; inOl = true; }
+          html += `<li>${escapeHtml(olMatch[1])}</li>`;
+          continue;
+        }
+
+        closeLists();
+        const linked = escapeHtml(line).replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noreferrer">$1</a>');
+        const inlineCode = linked.replace(/`([^`]+)`/g, "<code>$1</code>");
+        html += `<p>${inlineCode}</p>`;
+      }
+
+      closeLists();
+      if (inCode) html += "</code></pre>";
+      return html;
+    }
+
+    async function goTo(idx, resetTimer = false) {
+      current = (idx + slides.length) % slides.length;
+      canvasOverview = false;
+      canvasScale = 1;
+      buildCanvas();
+      sync();
+
+      const currentSlide = slides[current];
+      if (currentSlide && currentSlide.blog) {
+        renderRelatedBlogs(currentSlide.blog.id);
+      }
+      await ensureLocalBlogLoaded(current);
+
+      if (resetTimer && playing) restartTimer();
+    }
+
+    function clamp(v, min, max) { return Math.min(max, Math.max(min, v)); }
+    function zoomCanvas(dir) { canvasOverview = false; canvasScale = clamp(canvasScale * (dir > 0 ? 1.12 : 0.88), 0.45, 1.8); sync(); }
+
+    function next() {
+      const isBlogChild = slides[current].parent === BLOG_ROOT_INDEX;
+      if (isBlogChild) {
+        const cluster = [BLOG_ROOT_INDEX, ...getBlogChildIndexes()];
+        const pos = cluster.indexOf(current);
+        const target = cluster[(pos + 1) % cluster.length];
+        goTo(target);
+        return;
+      }
+      const navPos = navSlideIndexes.indexOf(current);
+      const target = navSlideIndexes[(navPos + 1) % navSlideIndexes.length];
+      goTo(target);
+    }
+
+    function prev() {
+      const isBlogChild = slides[current].parent === BLOG_ROOT_INDEX;
+      if (isBlogChild) {
+        const cluster = [BLOG_ROOT_INDEX, ...getBlogChildIndexes()];
+        const pos = cluster.indexOf(current);
+        const target = cluster[(pos - 1 + cluster.length) % cluster.length];
+        goTo(target);
+        return;
+      }
+      const navPos = navSlideIndexes.indexOf(current);
+      const target = navSlideIndexes[(navPos - 1 + navSlideIndexes.length) % navSlideIndexes.length];
+      goTo(target);
+    }
+
+    function restartTimer() {
+      clearInterval(timer);
+      timer = setInterval(() => {
+        if (!playing) return;
+        if (canvasOverview) {
+          goTo(current);
+          return;
+        }
+        next();
+      }, 5200);
+    }
+
+    function applySidebarState(collapsed) {
+      sidebarCollapsed = !!collapsed;
+      document.body.classList.toggle("sidebar-collapsed", sidebarCollapsed);
+      const label = sidebarCollapsed ? "Show menu" : "Hide menu";
+      sidebarToggleBtn.setAttribute("aria-label", label);
+      sidebarToggleBtn.setAttribute("title", label);
+      buildCanvas();
+      sync();
+    }
+
+    function updatePlayIcon() {
+      playBtn.textContent = playing ? "II" : ">";
+      const t = playing ? "Pause autoplay" : "Resume autoplay";
+      playBtn.setAttribute("aria-label", t);
+      playBtn.setAttribute("title", t);
+    }
+
+    function handleActionClick(event) {
+      const actionEl = event.target.closest("[data-action]");
+      if (!actionEl) return;
+
+      const action = actionEl.dataset.action;
+      if (!action) return;
+
+      event.preventDefault();
+      event.stopPropagation();
+
+      if (action === "open-blog") {
+        const blogId = actionEl.dataset.blogId;
+        const blog = blogCatalog.find((b) => b.id === blogId);
+        if (!blog) return;
+
+        if (blog.kind === "external") {
+          window.open(blog.url, "_blank", "noopener,noreferrer");
+          return;
+        }
+
+        const idx = getBlogSlideIndex(blogId);
+        if (idx > -1) goTo(idx, true);
+        return;
+      }
+
+      if (action === "open-slide") {
+        const slideIdx = Number(actionEl.dataset.slideIdx);
+        if (Number.isInteger(slideIdx) && slideIdx > -1) goTo(slideIdx, true);
+        return;
+      }
+
+      if (action === "filter-category") {
+        const category = actionEl.dataset.category || "All";
+        if (mapLegendPanel.contains(actionEl)) {
+          if (actionEl.dataset.scope === "repo") {
+            mapRepoCategoryFilter = category;
+          } else {
+            mapBlogCategoryFilter = category;
+          }
+          if (canvasOverview) {
+            buildCanvas();
+            sync();
+          }
+          renderMapLegend();
+          return;
+        }
+        renderBlogCards(category, activeBlogSort);
+        renderMapLegend();
+        return;
+      }
+
+      if (action === "sort-blogs") {
+        const sortBy = actionEl.dataset.sort || "Newest";
+        renderBlogCards(activeBlogCategory, sortBy);
+        renderMapLegend();
+        return;
+      }
+
+      if (action === "back-blog-root") {
+        goTo(BLOG_ROOT_INDEX, true);
+        return;
+      }
+
+      if (action === "back-repo-root") {
+        const idx = slides.findIndex((slide) => slide.key === "repos-root");
+        if (idx > -1) goTo(idx, true);
+      }
+    }
+
+    async function loadBlogCatalog() {
+      try {
+        const response = await fetch("blogs/blogCatalog.json");
+        if (!response.ok) throw new Error(`Failed to load blog catalog (${response.status})`);
+        const json = await response.json();
+        if (Array.isArray(json) && json.length) {
+          blogCatalog = json;
+        }
+      } catch (err) {
+        console.warn("Using fallback blog catalog:", err);
+      }
+    }
+
+    playBtn.addEventListener("click", () => {
+      playing = !playing;
+      if (playing && canvasOverview) goTo(current);
+      else sync();
+      if (playing) restartTimer();
+      else clearInterval(timer);
     });
+
+    zoomOutBtn.addEventListener("click", () => zoomCanvas(-1));
+    zoomInBtn.addEventListener("click", () => zoomCanvas(1));
+    canvasPrevBtn.addEventListener("click", () => { prev(); if (playing) restartTimer(); });
+    canvasNextBtn.addEventListener("click", () => { next(); if (playing) restartTimer(); });
+    canvasOverviewBtn.addEventListener("click", () => setCanvasOverview());
+    canvasHomeBtn.addEventListener("click", () => goTo(BLOG_ROOT_INDEX, true));
+    sidebarToggleBtn.addEventListener("click", () => applySidebarState(!sidebarCollapsed));
+    canvasStage.addEventListener("click", handleActionClick);
+    mapLegendPanel.addEventListener("click", handleActionClick);
+    themeToggleBtn.addEventListener("click", () => {
+      const isLight = document.body.classList.contains("light-theme");
+      applyTheme(isLight ? "dark" : "light");
+    });
+
+    window.addEventListener("keydown", (e) => {
+      if (e.key === "ArrowRight" || e.key === "PageDown") { next(); if (playing) restartTimer(); }
+      if (e.key === "ArrowLeft" || e.key === "PageUp") { prev(); if (playing) restartTimer(); }
+      if (e.key === "+" || e.key === "=") { e.preventDefault(); zoomCanvas(1); }
+      if (e.key === "-" || e.key === "_") { e.preventDefault(); zoomCanvas(-1); }
+      if (e.key === " ") { e.preventDefault(); playBtn.click(); }
+    });
+
+    canvasViewport.addEventListener("wheel", (e) => {
+      const scrollHost = getScrollableAncestor(e.target);
+      if (scrollHost) {
+        const atTop = scrollHost.scrollTop <= 0;
+        const atBottom = scrollHost.scrollTop + scrollHost.clientHeight >= scrollHost.scrollHeight - 1;
+        if ((e.deltaY < 0 && !atTop) || (e.deltaY > 0 && !atBottom)) {
+          return;
+        }
+      }
+      e.preventDefault();
+      zoomCanvas(e.deltaY < 0 ? 1 : -1);
+    }, { passive: false });
+
+    async function init() {
+      await loadBlogCatalog();
+      rebuildSlidesFromCatalog();
+      initTheme();
+      document.body.classList.add("canvas");
+      current = BLOG_ROOT_INDEX;
+      canvasOverview = false;
+      canvasScale = 1;
+      render();
+      applySidebarState(false);
+      await goTo(BLOG_ROOT_INDEX, false);
+      updatePlayIcon();
+      restartTimer();
+      window.addEventListener("resize", () => { buildCanvas(); sync(); });
+    }
+
+    init();
   </script>
 </body>
 </html>

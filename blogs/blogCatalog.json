@@ -1,0 +1,39 @@
+[
+  {
+    "id": "ai-generated-ui-linkedin",
+    "name": "Does your AI Generated UI all looks the same?",
+    "topic": "Design",
+    "category": "Design",
+    "summary": "A practical view on why many AI-generated interfaces look similar and how to avoid generic outcomes.",
+    "kind": "external",
+    "source": "LinkedIn",
+    "url": "https://www.linkedin.com/pulse/does-your-ai-generated-ui-all-looks-same-prateek-dhiman-8pdge/",
+    "date": "2026-07-01",
+    "createdDate": "2026-07-01"
+  },
+  {
+    "id": "agentic-dev-local",
+    "name": "Getting Started with Agentic Development",
+    "topic": "Agents",
+    "category": "Agentic Development",
+    "summary": "Local markdown sample loaded from the blogs folder and rendered in a child page.",
+    "kind": "local",
+    "source": "Local",
+    "path": "blogs/getting-started-agentic-development.md",
+    "contentMarkdown": "# Getting Started with Agentic Development\n\nAgentic development is a practical way to design systems that can plan, use tools, and recover from failures with minimal manual orchestration.\n\n## Why It Matters\n\n- You can break complex workflows into reusable tool calls.\n- You can keep business logic explicit while still using model reasoning.\n- You can inspect failures at step boundaries and improve quickly.\n\n## Basic Flow\n\n1. Define the user goal and completion criteria.\n2. Model proposes an execution plan.\n3. Runtime resolves each step using tools or APIs.\n4. Guardrails validate outputs.\n5. System returns final response with trace metadata.\n\n## Design Notes\n\nUse a small command surface first. Add tools only when there is a repeated need.\n\n```text\nuser -> planner -> tool router -> tool execution -> validator -> response\n```\n\n## Next Steps\n\n- Add category-specific tools for Azure Architecture and Agents.\n- Track retries and failure reasons for every tool call.\n- Add evaluation prompts for regression checks.",
+    "date": "2026-07-20",
+    "createdDate": "2026-07-20"
+  },
+  {
+    "id": "agentic-development-playbook",
+    "name": "From a Month to a Few Days: How Agentic Development Rewrote My Build Playbook",
+    "topic": "Agentic AI",
+    "category": "Agentic Development",
+    "summary": "How direct agent workflows compressed a build cycle from weeks to days.",
+    "kind": "external",
+    "source": "LinkedIn",
+    "url": "https://www.linkedin.com/pulse/from-month-few-days-how-agentic-development-rewrote-my-prateek-dhiman-1vd1e/",
+    "date": "2026-04-22",
+    "createdDate": "2026-04-22"
+  }
+]
