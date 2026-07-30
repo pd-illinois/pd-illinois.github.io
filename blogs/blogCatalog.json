@@ -1,5 +1,17 @@
 [
   {
+    "id": "token-economics-in-practice",
+    "name": "Token Economics in Practice",
+    "topic": "Azure Architecture",
+    "category": "Tokenomics",
+    "summary": "A practical walkthrough of token economics tradeoffs and optimization decisions for real-world AI systems.",
+    "kind": "external",
+    "source": "Microsoft Tech Community",
+    "url": "https://techcommunity.microsoft.com/blog/AzureArchitectureBlog/token-economics-in-practice/4540472",
+    "date": "2026-07-30",
+    "createdDate": "2026-07-30"
+  },
+  {
     "id": "ai-generated-ui-linkedin",
     "name": "Does your AI Generated UI all looks the same?",
     "topic": "Design",
